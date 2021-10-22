@@ -25,9 +25,9 @@ canvas1 = tkinter.Canvas(frame, width=300, height=400)
 canvas1.pack()
 
 var1 = tkinter.IntVar()
-status1: int = 0
-status2: int = 0
-status3: int = 0
+status1 = 0
+status2 = 0
+status3 = 0
 
 # declare this so they can be used as global in the Save Config Call Back function
 input_txt1 = tkinter.Text()
@@ -73,6 +73,8 @@ def Refresh():
         B2.configure(background='gray')
     if (str != saved_config_data[2]):
         B3.configure(background='gray')
+    Check_Input_Data()
+    Set_Status()
     frame.after(500, Refresh)
 
 def Check_sel():
@@ -109,7 +111,7 @@ def Configure_Input_Data():
     if path.is_file():
         print(f'File {path_to_file} found')
         f = open(path_to_file, "r")
-        Lines = f.readlines()
+        Lines = f.read().splitlines()
         i = 0
         for line in Lines:
             saved_config_data[i] = line[6:]
@@ -129,8 +131,8 @@ def Configure_Input_Data():
 def Data_Save_Call_Back():
     global input_txt1, input_txt2, input_txt3, Label_Save
     f = open(path_to_file, "w")
-    f.write("Line1:" + input_txt1.get('1.0', 'end-1c'))
-    f.write("Line2:" + input_txt2.get('1.0', 'end-1c'))
+    f.write("Line1:" + input_txt1.get('1.0', 'end-1c') + "\n")
+    f.write("Line2:" + input_txt2.get('1.0', 'end-1c') + "\n")
     f.write("Line3:" + input_txt3.get('1.0', 'end-1c'))
     f.close()
     Label_Save.configure(text="Configuration Saved. Close the Configuration Window")
@@ -138,18 +140,28 @@ def Data_Save_Call_Back():
 
 def Check_Input_Data():
     global status1, status2, status3
-    print('Checking if input data is present!')
     if path.is_file():
+        print(f'File {path_to_file} found')
+        f = open(path_to_file, "r")
+        Lines = f.read().splitlines()
+        i = 0
+        for line in Lines:
+            saved_config_data[i] = line[6:]
+            print(saved_config_data[i])
+            i = i + 1
+        f.close()
+    if saved_config_data[0] != "default" and saved_config_data[0] != "":
         status1 = 1
-        status2 = 1
-        status3 = 1
-        print(f'File {path_to_file} exists')
     else:
         status1 = 0
+    if saved_config_data[1] != "default" and saved_config_data[1] != "":
+        status2 = 1
+    else:
         status2 = 0
+    if saved_config_data[2] != "default" and saved_config_data[2] != "":
+        status3 = 1
+    else:
         status3 = 0
-        print(f'File {path_to_file} does not exist')
-
 
 def Set_Status():
     if (status1 == 0):
