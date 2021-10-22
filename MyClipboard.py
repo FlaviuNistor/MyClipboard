@@ -112,8 +112,23 @@ def Configure_Input_Data():
 
     if path.is_file():
         print(f'File {path_to_file} found')
+        f = open(path_to_file, "r")
+        Lines = f.readlines()
+        Confi_info = ["default", "default", "default"]
+        i = 0
+        for line in Lines:
+            Confi_info[i] = line[6:]
+            print(Confi_info[i])
+            i = i +1
+        f.close()
+
+        input_txt1.insert('end', Confi_info[0])
+        input_txt2.insert('end', Confi_info[1])
+        input_txt3.insert('end', Confi_info[2])
+
     else:
         f = open(path_to_file, "w")
+        print(f'File {path_to_file} created')
         f.close()
 
 def Data_Save_Call_Back():
