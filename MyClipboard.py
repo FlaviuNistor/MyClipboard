@@ -10,9 +10,11 @@ from pathlib import Path
 # File name intended to be used
 config_file_name = 'config.txt'
 # Path expected. The folder is hiden
-path_to_file = f'.temp/{config_file_name}'
-# Check if file exists. Return and save: True or False
+path_to_file = f'{config_file_name}'
+# Check if file exists. Return (and save in variable): True or False
 path = Path(path_to_file)
+
+saved_config_data = ["myID", "myMAIL", "myGMAIL"]
 
 # Top level window
 frame = tkinter.Tk()
@@ -23,9 +25,15 @@ canvas1 = tkinter.Canvas(frame, width=300, height=400)
 canvas1.pack()
 
 var1 = tkinter.IntVar()
-status1: int = 0
-status2: int = 0
-status3: int = 0
+status1 = 0
+status2 = 0
+status3 = 0
+
+# declare this so they can be used as global in the Save Config Call Back function
+input_txt1 = tkinter.Text()
+input_txt2 = tkinter.Text()
+input_txt3 = tkinter.Text()
+Label_Save = tkinter.Label()
 
 def IDCallBack():
     global label
@@ -33,9 +41,7 @@ def IDCallBack():
     B1.configure(background='green')
     B2.configure(background='gray')
     B3.configure(background='gray')
-    pyperclip.copy('myID')
-    # cmd='echo '+"90127067"+'|clip'
-    # return check_call(cmd, shell=True)
+    pyperclip.copy(saved_config_data[0])
 
 def MailCallBack():
     global label
@@ -43,9 +49,7 @@ def MailCallBack():
     B1.configure(background='gray')
     B2.configure(background='green')
     B3.configure(background='gray')
-    pyperclip.copy('mymail1')
-    # cmd='echo '+"flaviu.nistor@continental-corporation.com"+'|clip'
-    # return check_call(cmd, shell=True)
+    pyperclip.copy(saved_config_data[1])
 
 def GMailCallBack():
     global label
@@ -53,9 +57,7 @@ def GMailCallBack():
     B1.configure(background='gray')
     B2.configure(background='gray')
     B3.configure(background='green')
-    pyperclip.copy('mymail2')
-    # cmd='echo '+"flaviu.nistor@gmail.com"+'|clip'
-    # return check_call(cmd, shell=True)
+    pyperclip.copy(saved_config_data[2])
 
 def Refresh():
     global content
@@ -65,12 +67,14 @@ def Refresh():
         content.configure(text='')
 
     str = pyperclip.paste()
-    if (str != 'myID'):
+    if (str != saved_config_data[0]):
         B1.configure(background='gray')
-    if (str != 'mymail1'):
+    if (str != saved_config_data[1]):
         B2.configure(background='gray')
-    if (str != 'mymail2'):
+    if (str != saved_config_data[2]):
         B3.configure(background='gray')
+    Check_Input_Data()
+    Set_Status()
     frame.after(500, Refresh)
 
 def Check_sel():
@@ -80,6 +84,7 @@ def Check_sel():
         content.configure(text='')
 
 def Configure_Input_Data():
+    global input_txt1, input_txt2, input_txt3, Label_Save
     # Toplevel object which will be treated as a new window
     configWindow = tkinter.Toplevel(frame)
 
@@ -92,30 +97,71 @@ def Configure_Input_Data():
     tkinter.Label(configWindow, text="ENTER ID").grid(row=0)
     tkinter.Label(configWindow, text="ENTER MAIL").grid(row=1)
     tkinter.Label(configWindow, text="ENTER GMAIL").grid(row=2)
-    inputtxt1 = tkinter.Text(configWindow, height=1, width=45)
-    inputtxt2 = tkinter.Text(configWindow, height=1, width=45)
-    inputtxt3 = tkinter.Text(configWindow, height=1, width=45)
-    inputtxt1.grid(row=0, column=1)
-    inputtxt2.grid(row=1, column=1)
-    inputtxt3.grid(row=2, column=1)
-    tkinter.Button(configWindow, text='Cancel', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W, pady=4)
-    tkinter.Button(configWindow, text='Save').grid(row=5, column=1, sticky=tkinter.W, pady=4)
+    input_txt1 = tkinter.Text(configWindow, height=1, width=45)
+    input_txt2 = tkinter.Text(configWindow, height=1, width=45)
+    input_txt3 = tkinter.Text(configWindow, height=1, width=45)
+    input_txt1.grid(row=0, column=1)
+    input_txt2.grid(row=1, column=1)
+    input_txt3.grid(row=2, column=1)
+    tkinter.Button(configWindow, text='Close', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W, pady=4)
+    tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W, pady=4)
+    Label_Save = tkinter.Label(configWindow, height=1, width=45)
+    Label_Save.grid(row=6, column=1)
+
+    if path.is_file():
+        print(f'File {path_to_file} found')
+        f = open(path_to_file, "r")
+        Lines = f.read().splitlines()
+        i = 0
+        for line in Lines:
+            saved_config_data[i] = line[6:]
+            print(saved_config_data[i])
+            i = i +1
+        f.close()
+
+        input_txt1.insert('end', saved_config_data[0])
+        input_txt2.insert('end', saved_config_data[1])
+        input_txt3.insert('end', saved_config_data[2])
+
+    else:
+        f = open(path_to_file, "w")
+        print(f'File {path_to_file} created')
+        f.close()
+
+def Data_Save_Call_Back():
+    global input_txt1, input_txt2, input_txt3, Label_Save
+    f = open(path_to_file, "w")
+    f.write("Line1:" + input_txt1.get('1.0', 'end-1c') + "\n")
+    f.write("Line2:" + input_txt2.get('1.0', 'end-1c') + "\n")
+    f.write("Line3:" + input_txt3.get('1.0', 'end-1c'))
+    f.close()
+    Label_Save.configure(text="Configuration Saved. Close the Configuration Window")
 
 
 def Check_Input_Data():
     global status1, status2, status3
-    print('Checking if input data is present!')
     if path.is_file():
+        print(f'File {path_to_file} found')
+        f = open(path_to_file, "r")
+        Lines = f.read().splitlines()
+        i = 0
+        for line in Lines:
+            saved_config_data[i] = line[6:]
+            print(saved_config_data[i])
+            i = i + 1
+        f.close()
+    if saved_config_data[0] != "default" and saved_config_data[0] != "":
         status1 = 1
-        status2 = 1
-        status3 = 1
-        print(f'File {path_to_file} exists')
     else:
         status1 = 0
+    if saved_config_data[1] != "default" and saved_config_data[1] != "":
+        status2 = 1
+    else:
         status2 = 0
+    if saved_config_data[2] != "default" and saved_config_data[2] != "":
+        status3 = 1
+    else:
         status3 = 0
-        print(f'File {path_to_file} does not exist')
-
 
 def Set_Status():
     if (status1 == 0):
