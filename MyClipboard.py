@@ -10,8 +10,8 @@ from pathlib import Path
 # File name intended to be used
 config_file_name = 'config.txt'
 # Path expected. The folder is hiden
-path_to_file = f'.temp/{config_file_name}'
-# Check if file exists. Return and save: True or False
+path_to_file = f'{config_file_name}'
+# Check if file exists. Return (and save in variable): True or False
 path = Path(path_to_file)
 
 # Top level window
@@ -26,6 +26,12 @@ var1 = tkinter.IntVar()
 status1: int = 0
 status2: int = 0
 status3: int = 0
+
+# declare this so they can be used as global in the Save Config Call Back function
+input_txt1 = tkinter.Text()
+input_txt2 = tkinter.Text()
+input_txt3 = tkinter.Text()
+Label_Save = tkinter.Label()
 
 def IDCallBack():
     global label
@@ -80,6 +86,7 @@ def Check_sel():
         content.configure(text='')
 
 def Configure_Input_Data():
+    global input_txt1, input_txt2, input_txt3, Label_Save
     # Toplevel object which will be treated as a new window
     configWindow = tkinter.Toplevel(frame)
 
@@ -92,14 +99,34 @@ def Configure_Input_Data():
     tkinter.Label(configWindow, text="ENTER ID").grid(row=0)
     tkinter.Label(configWindow, text="ENTER MAIL").grid(row=1)
     tkinter.Label(configWindow, text="ENTER GMAIL").grid(row=2)
-    inputtxt1 = tkinter.Text(configWindow, height=1, width=45)
-    inputtxt2 = tkinter.Text(configWindow, height=1, width=45)
-    inputtxt3 = tkinter.Text(configWindow, height=1, width=45)
-    inputtxt1.grid(row=0, column=1)
-    inputtxt2.grid(row=1, column=1)
-    inputtxt3.grid(row=2, column=1)
-    tkinter.Button(configWindow, text='Cancel', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W, pady=4)
-    tkinter.Button(configWindow, text='Save').grid(row=5, column=1, sticky=tkinter.W, pady=4)
+    input_txt1 = tkinter.Text(configWindow, height=1, width=45)
+    input_txt2 = tkinter.Text(configWindow, height=1, width=45)
+    input_txt3 = tkinter.Text(configWindow, height=1, width=45)
+    input_txt1.grid(row=0, column=1)
+    input_txt2.grid(row=1, column=1)
+    input_txt3.grid(row=2, column=1)
+    tkinter.Button(configWindow, text='Close', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W, pady=4)
+    tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W, pady=4)
+    Label_Save = tkinter.Label(configWindow, height=1, width=45)
+    Label_Save.grid(row=6, column=1)
+
+    if path.is_file():
+        print(f'File {path_to_file} found')
+    else:
+        f = open(path_to_file, "w")
+        f.close()
+
+def Data_Save_Call_Back():
+    global input_txt1, input_txt2, input_txt3, Label_Save
+    f = open(path_to_file, "w")
+    print(input_txt1.get('1.0', 'end-1c'))
+    f.write("Line1:" + input_txt1.get('1.0', 'end-1c') + "\n")
+    print(input_txt2.get('1.0', 'end-1c'))
+    f.write("Line2:" + input_txt2.get('1.0', 'end-1c') + "\n")
+    print(input_txt3.get('1.0', 'end-1c'))
+    f.write("Line3:" + input_txt3.get('1.0', 'end-1c'))
+    f.close()
+    Label_Save.configure(text="Configuration Saved. Close the Configuration Window")
 
 
 def Check_Input_Data():
