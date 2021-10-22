@@ -14,6 +14,8 @@ path_to_file = f'{config_file_name}'
 # Check if file exists. Return (and save in variable): True or False
 path = Path(path_to_file)
 
+saved_config_data = ["myID", "myMAIL", "myGMAIL"]
+
 # Top level window
 frame = tkinter.Tk()
 frame.title('Copy to clipboard')
@@ -39,9 +41,7 @@ def IDCallBack():
     B1.configure(background='green')
     B2.configure(background='gray')
     B3.configure(background='gray')
-    pyperclip.copy('myID')
-    # cmd='echo '+"90127067"+'|clip'
-    # return check_call(cmd, shell=True)
+    pyperclip.copy(saved_config_data[0])
 
 def MailCallBack():
     global label
@@ -49,9 +49,7 @@ def MailCallBack():
     B1.configure(background='gray')
     B2.configure(background='green')
     B3.configure(background='gray')
-    pyperclip.copy('mymail1')
-    # cmd='echo '+"flaviu.nistor@continental-corporation.com"+'|clip'
-    # return check_call(cmd, shell=True)
+    pyperclip.copy(saved_config_data[1])
 
 def GMailCallBack():
     global label
@@ -59,9 +57,7 @@ def GMailCallBack():
     B1.configure(background='gray')
     B2.configure(background='gray')
     B3.configure(background='green')
-    pyperclip.copy('mymail2')
-    # cmd='echo '+"flaviu.nistor@gmail.com"+'|clip'
-    # return check_call(cmd, shell=True)
+    pyperclip.copy(saved_config_data[2])
 
 def Refresh():
     global content
@@ -71,11 +67,11 @@ def Refresh():
         content.configure(text='')
 
     str = pyperclip.paste()
-    if (str != 'myID'):
+    if (str != saved_config_data[0]):
         B1.configure(background='gray')
-    if (str != 'mymail1'):
+    if (str != saved_config_data[1]):
         B2.configure(background='gray')
-    if (str != 'mymail2'):
+    if (str != saved_config_data[2]):
         B3.configure(background='gray')
     frame.after(500, Refresh)
 
@@ -114,17 +110,16 @@ def Configure_Input_Data():
         print(f'File {path_to_file} found')
         f = open(path_to_file, "r")
         Lines = f.readlines()
-        Confi_info = ["default", "default", "default"]
         i = 0
         for line in Lines:
-            Confi_info[i] = line[6:]
-            print(Confi_info[i])
+            saved_config_data[i] = line[6:]
+            print(saved_config_data[i])
             i = i +1
         f.close()
 
-        input_txt1.insert('end', Confi_info[0])
-        input_txt2.insert('end', Confi_info[1])
-        input_txt3.insert('end', Confi_info[2])
+        input_txt1.insert('end', saved_config_data[0])
+        input_txt2.insert('end', saved_config_data[1])
+        input_txt3.insert('end', saved_config_data[2])
 
     else:
         f = open(path_to_file, "w")
@@ -134,11 +129,8 @@ def Configure_Input_Data():
 def Data_Save_Call_Back():
     global input_txt1, input_txt2, input_txt3, Label_Save
     f = open(path_to_file, "w")
-    print(input_txt1.get('1.0', 'end-1c'))
-    f.write("Line1:" + input_txt1.get('1.0', 'end-1c') + "\n")
-    print(input_txt2.get('1.0', 'end-1c'))
-    f.write("Line2:" + input_txt2.get('1.0', 'end-1c') + "\n")
-    print(input_txt3.get('1.0', 'end-1c'))
+    f.write("Line1:" + input_txt1.get('1.0', 'end-1c'))
+    f.write("Line2:" + input_txt2.get('1.0', 'end-1c'))
     f.write("Line3:" + input_txt3.get('1.0', 'end-1c'))
     f.close()
     Label_Save.configure(text="Configuration Saved. Close the Configuration Window")
