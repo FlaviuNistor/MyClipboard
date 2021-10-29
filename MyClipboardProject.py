@@ -25,9 +25,7 @@ canvas1 = tkinter.Canvas(frame, width=300, height=400)
 canvas1.pack()
 
 var1 = tkinter.IntVar()
-status1 = 0
-status2 = 0
-status3 = 0
+status = [0, 0, 0]
 
 # declare this so they can be used as global in the Save Config Call Back function
 input_txt1 = tkinter.Text()
@@ -151,29 +149,29 @@ def Check_Input_Data():
             i = i + 1
         f.close()
     if saved_config_data[0] != "default" and saved_config_data[0] != "":
-        status1 = 1
+        status[0] = 1
     else:
-        status1 = 0
+        status[0] = 0
     if saved_config_data[1] != "default" and saved_config_data[1] != "":
-        status2 = 1
+        status[1] = 1
     else:
-        status2 = 0
+        status[1] = 0
     if saved_config_data[2] != "default" and saved_config_data[2] != "":
-        status3 = 1
+        status[2] = 1
     else:
-        status3 = 0
+        status[2] = 0
 
 def Set_Status():
-    if (status1 == 0):
+    if (status[0] == 0):
         canvas1.itemconfig(S1, fill="red")  # Fill the circle with RED
     else:
         canvas1.itemconfig(S1, fill="green")  # Fill the circle with GREEN
 
-    if (status2 == 0):
+    if (status[1] == 0):
         canvas1.itemconfig(S2, fill="red")  # Fill the circle with RED
     else:
         canvas1.itemconfig(S2, fill="green")  # Fill the circle with GREEN
-    if (status3 == 0):
+    if (status[2] == 0):
         canvas1.itemconfig(S3, fill="red")  # Fill the circle with RED
     else:
         canvas1.itemconfig(S3, fill="green")  # Fill the circle with GREEN
