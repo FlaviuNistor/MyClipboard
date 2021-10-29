@@ -29,7 +29,7 @@ status = [0, 0, 0]
 
 # declare this so they can be used as global in the Save Config Call Back function
 input_txt = [tkinter.Text(), tkinter.Text(), tkinter.Text()]
-Label_Save = tkinter.Label()
+Save_Message = tkinter.Label()
 
 
 def IDCallBack():
@@ -98,7 +98,7 @@ def Check_sel():
 
 
 def Configure_Input_Data():
-    global input_txt, Label_Save
+    global input_txt, Save_Message
     # Toplevel object which will be treated as a new window
     configWindow = tkinter.Toplevel(frame)
 
@@ -121,8 +121,8 @@ def Configure_Input_Data():
                                                                                   pady=4)
     tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W,
                                                                                 pady=4)
-    Label_Save = tkinter.Label(configWindow, height=1, width=45)
-    Label_Save.grid(row=6, column=1)
+    Save_Message = tkinter.Label(configWindow, height=1, width=45)
+    Save_Message.grid(row=6, column=1)
 
     if path.is_file():
         print(f'File {path_to_file} found')
@@ -146,13 +146,13 @@ def Configure_Input_Data():
 
 
 def Data_Save_Call_Back():
-    global input_txt, Label_Save
+    global input_txt, Save_Message
     f = open(path_to_file, "w")
     f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
     f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
     f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
     f.close()
-    Label_Save.configure(text="Configuration Saved. Close the Configuration Window")
+    Save_Message.configure(text="Configuration Saved. Close the Configuration Window")
 
 
 def Check_Input_Data():
