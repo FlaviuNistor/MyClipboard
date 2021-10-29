@@ -73,10 +73,7 @@ def GMailCallBack():
 
 def Refresh():
     global content
-    if var1.get() == 1:
-        content.configure(text=pyperclip.paste())
-    else:
-        content.configure(text='')
+    Check_sel()
 
     str = pyperclip.paste()
     i = 0
