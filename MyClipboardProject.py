@@ -79,12 +79,11 @@ def Refresh():
         content.configure(text='')
 
     str = pyperclip.paste()
-    if str != saved_config_data[0]:
-        B[0].configure(background='gray')
-    if str != saved_config_data[1]:
-        B[1].configure(background='gray')
-    if str != saved_config_data[2]:
-        B[2].configure(background='gray')
+    i = 0
+    while i <= 2:
+        if str != saved_config_data[i]:
+            B[i].configure(background='gray')
+        i += 1
     Check_Input_Data()
     Set_Status()
     frame.after(500, Refresh)
@@ -218,12 +217,13 @@ Set_Status()
 
 Config_button = tkinter.Button(frame, text="CONFIGURE", background='green', height=1, width=10,
                                command=Configure_Input_Data)
+Config_button.pack()
+canvas.create_window(20, 20, window=Config_button)
 
 CB = tkinter.Checkbutton(text='See current clipboard', font=('helvetica', 10), variable=var1, onvalue=1, offvalue=0,
                          command=Check_sel)
-
-Config_button.pack()
-canvas.create_window(20, 20, window=Config_button)
+CB.pack
+canvas.create_window(150, 280, window=CB)
 
 label = tkinter.Label(frame, text='', fg='green', font=('helvetica', 12, 'bold'))
 canvas.create_window(150, 220, window=label)
@@ -231,10 +231,8 @@ canvas.create_window(150, 220, window=label)
 status_label = tkinter.Label(frame, text='Status', fg='black', font=('helvetica', 12, 'bold'))
 canvas.create_window(75, 55, window=status_label)
 
-CB.pack
-canvas.create_window(150, 280, window=CB)
-
 content = tkinter.Label(frame, text='', fg='black', font=('helvetica', 12, 'bold'))
 canvas.create_window(150, 300, window=content)
+
 frame.after(1000, Refresh)
 frame.mainloop()
