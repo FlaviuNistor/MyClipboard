@@ -29,15 +29,12 @@ status = [0, 0, 0]
 
 # declare this so they can be used as global in the Save Config Call Back function
 input_txt = [tkinter.Text(), tkinter.Text(), tkinter.Text()]
-#input_txt1 = tkinter.Text()
-#input_txt2 = tkinter.Text()
-#input_txt3 = tkinter.Text()
 Label_Save = tkinter.Label()
 
 
 def IDCallBack():
     global label
-    if (status[0] == 1):
+    if status[0] == 1:
         label.configure(text='ID was copied to clipboard')
         B[0].configure(background='green')
         B2.configure(background='gray')
@@ -50,7 +47,7 @@ def IDCallBack():
 
 def MailCallBack():
     global label
-    if (status[1] == 1):
+    if status[1] == 1:
         label.configure(text='MAIL was copied to clipboard')
         B[0].configure(background='gray')
         B2.configure(background='green')
@@ -63,7 +60,7 @@ def MailCallBack():
 
 def GMailCallBack():
     global label
-    if (status[2] == 1):
+    if status[2] == 1:
         label.configure(text='GMAIL was copied to clipboard')
         B[0].configure(background='gray')
         B2.configure(background='gray')
@@ -76,17 +73,17 @@ def GMailCallBack():
 
 def Refresh():
     global content
-    if (var1.get() == 1):
+    if var1.get() == 1:
         content.configure(text=pyperclip.paste())
     else:
         content.configure(text='')
 
     str = pyperclip.paste()
-    if (str != saved_config_data[0]):
+    if str != saved_config_data[0]:
         B[0].configure(background='gray')
-    if (str != saved_config_data[1]):
+    if str != saved_config_data[1]:
         B2.configure(background='gray')
-    if (str != saved_config_data[2]):
+    if str != saved_config_data[2]:
         B3.configure(background='gray')
     Check_Input_Data()
     Set_Status()
@@ -94,7 +91,7 @@ def Refresh():
 
 
 def Check_sel():
-    if (var1.get() == 1):
+    if var1.get() == 1:
         content.configure(text=pyperclip.paste())
     else:
         content.configure(text='')
@@ -149,7 +146,7 @@ def Configure_Input_Data():
 
 
 def Data_Save_Call_Back():
-    global input_txt1, Label_Save
+    global input_txt, Label_Save
     f = open(path_to_file, "w")
     f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
     f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
@@ -184,16 +181,16 @@ def Check_Input_Data():
 
 
 def Set_Status():
-    if (status[0] == 0):
+    if status[0] == 0:
         canvas.itemconfig(S1, fill="red")  # Fill the circle with RED
     else:
         canvas.itemconfig(S1, fill="green")  # Fill the circle with GREEN
 
-    if (status[1] == 0):
+    if status[1] == 0:
         canvas.itemconfig(S2, fill="red")  # Fill the circle with RED
     else:
         canvas.itemconfig(S2, fill="green")  # Fill the circle with GREEN
-    if (status[2] == 0):
+    if status[2] == 0:
         canvas.itemconfig(S3, fill="red")  # Fill the circle with RED
     else:
         canvas.itemconfig(S3, fill="green")  # Fill the circle with GREEN
