@@ -37,8 +37,8 @@ def IDCallBack():
     if status[0] == 1:
         label.configure(text='ID was copied to clipboard')
         B[0].configure(background='green')
-        B2.configure(background='gray')
-        B3.configure(background='gray')
+        B[1].configure(background='gray')
+        B[2].configure(background='gray')
         pyperclip.copy(saved_config_data[0])
     else:
         label.configure(text='ID not configured')
@@ -50,12 +50,12 @@ def MailCallBack():
     if status[1] == 1:
         label.configure(text='MAIL was copied to clipboard')
         B[0].configure(background='gray')
-        B2.configure(background='green')
-        B3.configure(background='gray')
+        B[1].configure(background='green')
+        B[2].configure(background='gray')
         pyperclip.copy(saved_config_data[1])
     else:
         label.configure(text='MAIL not configured')
-        B2.configure(background='gray')
+        B[1].configure(background='gray')
 
 
 def GMailCallBack():
@@ -63,12 +63,12 @@ def GMailCallBack():
     if status[2] == 1:
         label.configure(text='GMAIL was copied to clipboard')
         B[0].configure(background='gray')
-        B2.configure(background='gray')
-        B3.configure(background='green')
+        B[1].configure(background='gray')
+        B[2].configure(background='green')
         pyperclip.copy(saved_config_data[2])
     else:
         label.configure(text='GMAIL not configured')
-        B3.configure(background='gray')
+        B[2].configure(background='gray')
 
 
 def Refresh():
@@ -82,9 +82,9 @@ def Refresh():
     if str != saved_config_data[0]:
         B[0].configure(background='gray')
     if str != saved_config_data[1]:
-        B2.configure(background='gray')
+        B[1].configure(background='gray')
     if str != saved_config_data[2]:
-        B3.configure(background='gray')
+        B[2].configure(background='gray')
     Check_Input_Data()
     Set_Status()
     frame.after(500, Refresh)
@@ -201,9 +201,13 @@ B[0] = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, co
 B[0].pack()
 canvas.create_window(150, 80, window=B[0])
 
-#B[0] = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, command=IDCallBack)
-B2 = tkinter.Button(frame, text="MAIL", background='gray', height=1, width=5, command=MailCallBack)
-B3 = tkinter.Button(frame, text="GMAIL", background='gray', height=1, width=5, command=GMailCallBack)
+B[1] = tkinter.Button(frame, text="MAIL", background='gray', height=1, width=5, command=MailCallBack)
+B[1].pack()
+canvas.create_window(150, 120, window=B[1])
+
+B[2] = tkinter.Button(frame, text="GMAIL", background='gray', height=1, width=5, command=GMailCallBack)
+B[2].pack()
+canvas.create_window(150, 160, window=B[2])
 
 Check_Input_Data()
 
@@ -221,13 +225,6 @@ CB = tkinter.Checkbutton(text='See current clipboard', font=('helvetica', 10), v
 
 Config_button.pack()
 canvas.create_window(20, 20, window=Config_button)
-
-#B[0].pack()
-#canvas.create_window(150, 80, window=B[0])
-B2.pack()
-canvas.create_window(150, 120, window=B2)
-B3.pack()
-canvas.create_window(150, 160, window=B3)
 
 label = tkinter.Label(frame, text='', fg='green', font=('helvetica', 12, 'bold'))
 taglabel = canvas.create_window(150, 220, window=label)
