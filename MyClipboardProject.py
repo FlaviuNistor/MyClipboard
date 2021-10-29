@@ -25,9 +25,7 @@ canvas1 = tkinter.Canvas(frame, width=300, height=400)
 canvas1.pack()
 
 var1 = tkinter.IntVar()
-status1 = 0
-status2 = 0
-status3 = 0
+status = [0, 0, 0]
 
 # declare this so they can be used as global in the Save Config Call Back function
 input_txt1 = tkinter.Text()
@@ -35,29 +33,45 @@ input_txt2 = tkinter.Text()
 input_txt3 = tkinter.Text()
 Label_Save = tkinter.Label()
 
+
 def IDCallBack():
     global label
-    label.configure(text='ID was copied to clipboard')
-    B1.configure(background='green')
-    B2.configure(background='gray')
-    B3.configure(background='gray')
-    pyperclip.copy(saved_config_data[0])
+    if (status[0] == 1):
+        label.configure(text='ID was copied to clipboard')
+        B[0].configure(background='green')
+        B2.configure(background='gray')
+        B3.configure(background='gray')
+        pyperclip.copy(saved_config_data[0])
+    else:
+        label.configure(text='ID not configured')
+        B[0].configure(background='gray')
+
 
 def MailCallBack():
     global label
-    label.configure(text='MAIL was copied to clipboard')
-    B1.configure(background='gray')
-    B2.configure(background='green')
-    B3.configure(background='gray')
-    pyperclip.copy(saved_config_data[1])
+    if (status[1] == 1):
+        label.configure(text='MAIL was copied to clipboard')
+        B[0].configure(background='gray')
+        B2.configure(background='green')
+        B3.configure(background='gray')
+        pyperclip.copy(saved_config_data[1])
+    else:
+        label.configure(text='MAIL not configured')
+        B2.configure(background='gray')
+
 
 def GMailCallBack():
     global label
-    label.configure(text='GMAIL was copied to clipboard')
-    B1.configure(background='gray')
-    B2.configure(background='gray')
-    B3.configure(background='green')
-    pyperclip.copy(saved_config_data[2])
+    if (status[2] == 1):
+        label.configure(text='GMAIL was copied to clipboard')
+        B[0].configure(background='gray')
+        B2.configure(background='gray')
+        B3.configure(background='green')
+        pyperclip.copy(saved_config_data[2])
+    else:
+        label.configure(text='GMAIL not configured')
+        B3.configure(background='gray')
+
 
 def Refresh():
     global content
@@ -68,7 +82,7 @@ def Refresh():
 
     str = pyperclip.paste()
     if (str != saved_config_data[0]):
-        B1.configure(background='gray')
+        B[0].configure(background='gray')
     if (str != saved_config_data[1]):
         B2.configure(background='gray')
     if (str != saved_config_data[2]):
@@ -77,11 +91,13 @@ def Refresh():
     Set_Status()
     frame.after(500, Refresh)
 
+
 def Check_sel():
     if (var1.get() == 1):
         content.configure(text=pyperclip.paste())
     else:
         content.configure(text='')
+
 
 def Configure_Input_Data():
     global input_txt1, input_txt2, input_txt3, Label_Save
@@ -103,8 +119,10 @@ def Configure_Input_Data():
     input_txt1.grid(row=0, column=1)
     input_txt2.grid(row=1, column=1)
     input_txt3.grid(row=2, column=1)
-    tkinter.Button(configWindow, text='Close', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W, pady=4)
-    tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W, pady=4)
+    tkinter.Button(configWindow, text='Close', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W,
+                                                                                  pady=4)
+    tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W,
+                                                                                pady=4)
     Label_Save = tkinter.Label(configWindow, height=1, width=45)
     Label_Save.grid(row=6, column=1)
 
@@ -116,7 +134,7 @@ def Configure_Input_Data():
         for line in Lines:
             saved_config_data[i] = line[6:]
             print(saved_config_data[i])
-            i = i +1
+            i = i + 1
         f.close()
 
         input_txt1.insert('end', saved_config_data[0])
@@ -127,6 +145,7 @@ def Configure_Input_Data():
         f = open(path_to_file, "w")
         print(f'File {path_to_file} created')
         f.close()
+
 
 def Data_Save_Call_Back():
     global input_txt1, input_txt2, input_txt3, Label_Save
@@ -139,7 +158,6 @@ def Data_Save_Call_Back():
 
 
 def Check_Input_Data():
-    global status1, status2, status3
     if path.is_file():
         print(f'File {path_to_file} found')
         f = open(path_to_file, "r")
@@ -151,35 +169,41 @@ def Check_Input_Data():
             i = i + 1
         f.close()
     if saved_config_data[0] != "default" and saved_config_data[0] != "":
-        status1 = 1
+        status[0] = 1
     else:
-        status1 = 0
+        status[0] = 0
     if saved_config_data[1] != "default" and saved_config_data[1] != "":
-        status2 = 1
+        status[1] = 1
     else:
-        status2 = 0
+        status[1] = 0
     if saved_config_data[2] != "default" and saved_config_data[2] != "":
-        status3 = 1
+        status[2] = 1
     else:
-        status3 = 0
+        status[2] = 0
+
 
 def Set_Status():
-    if (status1 == 0):
+    if (status[0] == 0):
         canvas1.itemconfig(S1, fill="red")  # Fill the circle with RED
     else:
         canvas1.itemconfig(S1, fill="green")  # Fill the circle with GREEN
 
-    if (status2 == 0):
+    if (status[1] == 0):
         canvas1.itemconfig(S2, fill="red")  # Fill the circle with RED
     else:
         canvas1.itemconfig(S2, fill="green")  # Fill the circle with GREEN
-    if (status3 == 0):
+    if (status[2] == 0):
         canvas1.itemconfig(S3, fill="red")  # Fill the circle with RED
     else:
         canvas1.itemconfig(S3, fill="green")  # Fill the circle with GREEN
 
 
-B1 = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, command=IDCallBack)
+B = [tkinter.Button(), tkinter.Button(), tkinter.Button()]
+B[0] = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, command=IDCallBack)
+B[0].pack()
+canvas1.create_window(150, 80, window=B[0])
+
+#B[0] = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, command=IDCallBack)
 B2 = tkinter.Button(frame, text="MAIL", background='gray', height=1, width=5, command=MailCallBack)
 B3 = tkinter.Button(frame, text="GMAIL", background='gray', height=1, width=5, command=GMailCallBack)
 
@@ -200,8 +224,8 @@ CB = tkinter.Checkbutton(text='See current clipboard', font=('helvetica', 10), v
 Config_button.pack()
 canvas1.create_window(20, 20, window=Config_button)
 
-B1.pack()
-canvas1.create_window(150, 80, window=B1)
+#B[0].pack()
+#canvas1.create_window(150, 80, window=B[0])
 B2.pack()
 canvas1.create_window(150, 120, window=B2)
 B3.pack()
