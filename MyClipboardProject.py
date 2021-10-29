@@ -182,18 +182,19 @@ def Check_Input_Data():
 
 def Set_Status():
     if status[0] == 0:
-        canvas.itemconfig(S1, fill="red")  # Fill the circle with RED
+        canvas.itemconfig(Status_Indicator[0], fill="red")  # Fill the circle with RED
     else:
-        canvas.itemconfig(S1, fill="green")  # Fill the circle with GREEN
+        canvas.itemconfig(Status_Indicator[0], fill="green")  # Fill the circle with GREEN
 
     if status[1] == 0:
-        canvas.itemconfig(S2, fill="red")  # Fill the circle with RED
+        canvas.itemconfig(Status_Indicator[1], fill="red")  # Fill the circle with RED
     else:
-        canvas.itemconfig(S2, fill="green")  # Fill the circle with GREEN
+        canvas.itemconfig(Status_Indicator[1], fill="green")  # Fill the circle with GREEN
+        
     if status[2] == 0:
-        canvas.itemconfig(S3, fill="red")  # Fill the circle with RED
+        canvas.itemconfig(Status_Indicator[2], fill="red")  # Fill the circle with RED
     else:
-        canvas.itemconfig(S3, fill="green")  # Fill the circle with GREEN
+        canvas.itemconfig(Status_Indicator[2], fill="green")  # Fill the circle with GREEN
 
 
 B = [tkinter.Button(), tkinter.Button(), tkinter.Button()]
@@ -211,9 +212,7 @@ canvas.create_window(150, 160, window=B[2])
 
 Check_Input_Data()
 
-S1 = canvas.create_oval(70, 75, 80, 85)
-S2 = canvas.create_oval(70, 110, 80, 120)
-S3 = canvas.create_oval(70, 145, 80, 155)
+Status_Indicator = [canvas.create_oval(70, 75, 80, 85), canvas.create_oval(70, 110, 80, 120), canvas.create_oval(70, 145, 80, 155)]
 
 Set_Status()
 
@@ -227,15 +226,15 @@ Config_button.pack()
 canvas.create_window(20, 20, window=Config_button)
 
 label = tkinter.Label(frame, text='', fg='green', font=('helvetica', 12, 'bold'))
-taglabel = canvas.create_window(150, 220, window=label)
+canvas.create_window(150, 220, window=label)
 
 status_label = tkinter.Label(frame, text='Status', fg='black', font=('helvetica', 12, 'bold'))
-tagstatus_label = canvas.create_window(75, 55, window=status_label)
+canvas.create_window(75, 55, window=status_label)
 
 CB.pack
 canvas.create_window(150, 280, window=CB)
 
 content = tkinter.Label(frame, text='', fg='black', font=('helvetica', 12, 'bold'))
-tagcontent = canvas.create_window(150, 300, window=content)
+canvas.create_window(150, 300, window=content)
 frame.after(1000, Refresh)
 frame.mainloop()
