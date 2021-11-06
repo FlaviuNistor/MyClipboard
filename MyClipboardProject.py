@@ -88,7 +88,13 @@ def Refresh():
 
 def Check_sel():
     if var1.get() == 1:
-        content.configure(text=pyperclip.paste())
+        # get clipboard content as string
+        temp_string = pyperclip.paste()
+        # make sure to get only the first line in case of large text in the clipboard
+        # not to flood the content area with to much text. Use new line as separator
+        paperclip_content = temp_string.split('\n')[0]
+        # display max 50 characters from the first line of the clipboard content
+        content.configure(text=(paperclip_content[:50]))
     else:
         content.configure(text='')
 
@@ -107,6 +113,7 @@ def Configure_Input_Data():
     tkinter.Label(configWindow, text="ENTER ID").grid(row=0)
     tkinter.Label(configWindow, text="ENTER MAIL").grid(row=1)
     tkinter.Label(configWindow, text="ENTER GMAIL").grid(row=2)
+    # use a while to set the objects and index row based on var i
     input_txt[0] = tkinter.Text(configWindow, height=1, width=45)
     input_txt[1] = tkinter.Text(configWindow, height=1, width=45)
     input_txt[2] = tkinter.Text(configWindow, height=1, width=45)
