@@ -239,4 +239,6 @@ content = tkinter.Label(frame, text='', fg='black', font=('helvetica', 12, 'bold
 canvas.create_window(150, 300, window=content)
 
 frame.after(1000, Refresh)
-frame.mainloop()
+# use this to signal to other people this is an executable
+if __name__ == "__main__":
+    frame.mainloop()
