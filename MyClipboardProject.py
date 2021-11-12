@@ -35,47 +35,47 @@ status = [0, 0, 0]
 # declare this list so they can be used as global in the Save Config Call Back function
 input_txt = [tkinter.Text(), tkinter.Text(), tkinter.Text()]
 # declare a label to be able to print out a message when configuration is saved
-Save_Message = tkinter.Label()
+save_message = tkinter.Label()
 
 # CallBack function for pressing the ID button
 def IDCallBack():
-    global label
+    global main_win_message
     if status[0] == 1:
-        label.configure(text='ID was copied to clipboard')
+        main_win_message.configure(text='ID was copied to clipboard')
         B[0].configure(background='green')
         B[1].configure(background='gray')
         B[2].configure(background='gray')
         pyperclip.copy(saved_config_data[0])
     else:
-        label.configure(text='ID not configured')
+        main_win_message.configure(text='ID not configured')
         B[0].configure(background='gray')
 
 
 # CallBack function for pressing the MAIL button
 def MailCallBack():
-    global label
+    global main_win_message
     if status[1] == 1:
-        label.configure(text='MAIL was copied to clipboard')
+        main_win_message.configure(text='MAIL was copied to clipboard')
         B[0].configure(background='gray')
         B[1].configure(background='green')
         B[2].configure(background='gray')
         pyperclip.copy(saved_config_data[1])
     else:
-        label.configure(text='MAIL not configured')
+        main_win_message.configure(text='MAIL not configured')
         B[1].configure(background='gray')
 
 
 # CallBack function for pressing the GMAIL button
 def GMailCallBack():
-    global label
+    global main_win_message
     if status[2] == 1:
-        label.configure(text='GMAIL was copied to clipboard')
+        main_win_message.configure(text='GMAIL was copied to clipboard')
         B[0].configure(background='gray')
         B[1].configure(background='gray')
         B[2].configure(background='green')
         pyperclip.copy(saved_config_data[2])
     else:
-        label.configure(text='GMAIL not configured')
+        main_win_message.configure(text='GMAIL not configured')
         B[2].configure(background='gray')
 
 
@@ -111,7 +111,7 @@ def Check_sel():
 
 # Function used to configure the input data
 def Configure_Input_Data():
-    global input_txt, Save_Message
+    global input_txt, save_message
     # Toplevel object which will be treated as a new window
     configWindow = tkinter.Toplevel(frame)
 
@@ -134,8 +134,8 @@ def Configure_Input_Data():
                                                                                 pady=4)
     tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W,
                                                                                 pady=4)
-    Save_Message = tkinter.Label(configWindow, height=1, width=45)
-    Save_Message.grid(row=6, column=1)
+    save_message = tkinter.Label(configWindow, height=1, width=45)
+    save_message.grid(row=6, column=1)
 
     if path.is_file():
         print(f'File {path_to_file} found')
@@ -159,13 +159,13 @@ def Configure_Input_Data():
 
 # CallBack function for pressing the SAVE button
 def Data_Save_Call_Back():
-    global input_txt, Save_Message
+    global input_txt, save_message
     f = open(path_to_file, "w")
     f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
     f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
     f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
     f.close()
-    Save_Message.configure(text="Configuration Saved. Close the Configuration Window")
+    save_message.configure(text="Configuration Saved. Close the Configuration Window")
 
 
 # Function to check if the configured input data is valid
@@ -243,8 +243,8 @@ CB = tkinter.Checkbutton(text='See current clipboard', font=('helvetica', 10), v
 CB.pack
 canvas.create_window(150, 280, window=CB)
 
-label = tkinter.Label(frame, text='', fg='green', font=('helvetica', 12, 'bold'))
-canvas.create_window(150, 220, window=label)
+main_win_message = tkinter.Label(frame, text='', fg='green', font=('helvetica', 12, 'bold'))
+canvas.create_window(150, 220, window=main_win_message)
 
 status_label = tkinter.Label(frame, text='Status', fg='black', font=('helvetica', 12, 'bold'))
 canvas.create_window(75, 55, window=status_label)
