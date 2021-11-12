@@ -125,14 +125,13 @@ def Configure_Input_Data():
     tkinter.Label(configWindow, text="ENTER MAIL").grid(row=1)
     tkinter.Label(configWindow, text="ENTER GMAIL").grid(row=2)
     # use a while to set the objects and index row based on var i
-    input_txt[0] = tkinter.Text(configWindow, height=1, width=45)
-    input_txt[1] = tkinter.Text(configWindow, height=1, width=45)
-    input_txt[2] = tkinter.Text(configWindow, height=1, width=45)
-    input_txt[0].grid(row=0, column=1)
-    input_txt[1].grid(row=1, column=1)
-    input_txt[2].grid(row=2, column=1)
+    i = 0
+    while i <= 2:
+        input_txt[i] = tkinter.Text(configWindow, height=1, width=45)
+        input_txt[i].grid(row=i, column=1)
+        i += 1
     tkinter.Button(configWindow, text='Close', command=configWindow.destroy).grid(row=5, column=0, sticky=tkinter.W,
-                                                                                  pady=4)
+                                                                                pady=4)
     tkinter.Button(configWindow, text='Save', command=Data_Save_Call_Back).grid(row=5, column=1, sticky=tkinter.W,
                                                                                 pady=4)
     Save_Message = tkinter.Label(configWindow, height=1, width=45)
@@ -152,7 +151,6 @@ def Configure_Input_Data():
         input_txt[0].insert('end', saved_config_data[0])
         input_txt[1].insert('end', saved_config_data[1])
         input_txt[2].insert('end', saved_config_data[2])
-
     else:
         f = open(path_to_file, "w")
         print(f'File {path_to_file} created')
