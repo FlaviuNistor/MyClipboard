@@ -1,4 +1,6 @@
+# used to create the GUI
 import tkinter
+# used to interact with the clipboard
 import pyperclip
 
 # used to lunch an command to the OS
@@ -6,32 +8,36 @@ from subprocess import check_call
 # used to check if file exists
 from pathlib import Path
 
-# Expected configuration file information
-# File name intended to be used
+# Expected configuration file name for storing the input information
 config_file_name = 'config.txt'
-# Path expected. The folder is hiden
+# Path expected
 path_to_file = f'{config_file_name}'
 # Check if file exists. Return (and save in variable): True or False
 path = Path(path_to_file)
 
+# used to stored the saved configuration. Take this default values
 saved_config_data = ["myID", "myMAIL", "myGMAIL"]
 
-# Top level window
+# Top level window (main window). Set title and size
 frame = tkinter.Tk()
 frame.title('Copy to clipboard')
 frame.geometry('400x400')
 
+# Create a canvas on the main window
 canvas = tkinter.Canvas(frame, width=300, height=400)
 canvas.pack()
 
+# variable used to store the value of the checked box (True or False)
 var1 = tkinter.IntVar()
+# list to store the state of the status indicator
 status = [0, 0, 0]
 
-# declare this so they can be used as global in the Save Config Call Back function
+# declare this list so they can be used as global in the Save Config Call Back function
 input_txt = [tkinter.Text(), tkinter.Text(), tkinter.Text()]
+# declare a label to be able to print out a message when configuration is saved
 Save_Message = tkinter.Label()
 
-
+# CallBack function for pressing the ID button
 def IDCallBack():
     global label
     if status[0] == 1:
@@ -45,6 +51,7 @@ def IDCallBack():
         B[0].configure(background='gray')
 
 
+# CallBack function for pressing the MAIL button
 def MailCallBack():
     global label
     if status[1] == 1:
@@ -58,6 +65,7 @@ def MailCallBack():
         B[1].configure(background='gray')
 
 
+# CallBack function for pressing the GMAIL button
 def GMailCallBack():
     global label
     if status[2] == 1:
@@ -71,10 +79,10 @@ def GMailCallBack():
         B[2].configure(background='gray')
 
 
+# Function to refresh the GUI
 def Refresh():
     global content
     Check_sel()
-
     str = pyperclip.paste()
     i = 0
     while i <= 2:
@@ -86,6 +94,8 @@ def Refresh():
     frame.after(500, Refresh)
 
 
+# Function to check if the user wants to see the current content of clipboard by
+# checking/unchecking the check-box
 def Check_sel():
     if var1.get() == 1:
         # get clipboard content as string
@@ -99,6 +109,7 @@ def Check_sel():
         content.configure(text='')
 
 
+# Function used to configure the input data
 def Configure_Input_Data():
     global input_txt, Save_Message
     # Toplevel object which will be treated as a new window
@@ -148,6 +159,7 @@ def Configure_Input_Data():
         f.close()
 
 
+# CallBack function for pressing the SAVE button
 def Data_Save_Call_Back():
     global input_txt, Save_Message
     f = open(path_to_file, "w")
@@ -158,6 +170,7 @@ def Data_Save_Call_Back():
     Save_Message.configure(text="Configuration Saved. Close the Configuration Window")
 
 
+# Function to check if the configured input data is valid
 def Check_Input_Data():
     if path.is_file():
         print(f'File {path_to_file} found')
@@ -183,6 +196,7 @@ def Check_Input_Data():
         status[2] = 0
 
 
+# Function used to set the status indicator for each of the possible configured data
 def Set_Status():
     if status[0] == 0:
         canvas.itemconfig(Status_Indicator[0], fill="red")  # Fill the circle with RED
@@ -200,6 +214,7 @@ def Set_Status():
         canvas.itemconfig(Status_Indicator[2], fill="green")  # Fill the circle with GREEN
 
 
+# Declare list of buttons that will be used the in main window for ID, MAIL and GMAIL
 B = [tkinter.Button(), tkinter.Button(), tkinter.Button()]
 B[0] = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, command=IDCallBack)
 B[0].pack()
@@ -215,6 +230,7 @@ canvas.create_window(150, 160, window=B[2])
 
 Check_Input_Data()
 
+# List of status indicators
 Status_Indicator = [canvas.create_oval(70, 75, 80, 85), canvas.create_oval(70, 110, 80, 120), canvas.create_oval(70, 145, 80, 155)]
 
 Set_Status()
@@ -238,6 +254,7 @@ canvas.create_window(75, 55, window=status_label)
 content = tkinter.Label(frame, text='', fg='black', font=('helvetica', 12, 'bold'))
 canvas.create_window(150, 300, window=content)
 
+# trigger the Refresh function after 500ms. After this the Refresh function will keep calling itself
 frame.after(1000, Refresh)
 # use this to signal to other people this is an executable
 if __name__ == "__main__":
