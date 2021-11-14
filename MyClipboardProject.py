@@ -8,6 +8,8 @@ from subprocess import check_call
 # used to check if file exists
 from pathlib import Path
 
+# use dictionary to convert suggestive color name to hex
+# I used : https://htmlcolorcodes.com/
 color_convertor = {
     "mygray": "#C8D6D8",
     "myred": "#F78383",
