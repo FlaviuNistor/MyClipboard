@@ -8,6 +8,12 @@ from subprocess import check_call
 # used to check if file exists
 from pathlib import Path
 
+color_convertor = {
+    "mygray": "#C8D6D8",
+    "myred": "#F78383",
+    "mygreen": "#33753F"
+    }
+
 # Expected configuration file name for storing the input information
 config_file_name = 'config.txt'
 # Path expected
@@ -41,42 +47,42 @@ save_message = tkinter.Label()
 def IDCallBack():
     global main_win_message
     if status[0] == 1:
-        main_win_message.configure(text='ID was copied to clipboard')
-        B[0].configure(background='green')
-        B[1].configure(background='gray')
-        B[2].configure(background='gray')
+        main_win_message.configure(text='ID was copied to clipboard', fg=color_convertor["mygreen"])
+        B[0].configure(background=color_convertor["mygreen"])
+        B[1].configure(background=color_convertor["mygray"])
+        B[2].configure(background=color_convertor["mygray"])
         pyperclip.copy(saved_config_data[0])
     else:
-        main_win_message.configure(text='ID not configured')
-        B[0].configure(background='gray')
+        main_win_message.configure(text='ID not configured', fg=color_convertor["myred"])
+        B[0].configure(background=color_convertor["mygray"])
 
 
 # CallBack function for pressing the MAIL button
 def MailCallBack():
     global main_win_message
     if status[1] == 1:
-        main_win_message.configure(text='MAIL was copied to clipboard')
-        B[0].configure(background='gray')
-        B[1].configure(background='green')
-        B[2].configure(background='gray')
+        main_win_message.configure(text='MAIL was copied to clipboard', fg=color_convertor["mygreen"])
+        B[0].configure(background=color_convertor["mygray"])
+        B[1].configure(background=color_convertor["mygreen"])
+        B[2].configure(background=color_convertor["mygray"])
         pyperclip.copy(saved_config_data[1])
     else:
-        main_win_message.configure(text='MAIL not configured')
-        B[1].configure(background='gray')
+        main_win_message.configure(text='MAIL not configured', fg=color_convertor["myred"])
+        B[1].configure(background=color_convertor["mygray"])
 
 
 # CallBack function for pressing the GMAIL button
 def GMailCallBack():
     global main_win_message
     if status[2] == 1:
-        main_win_message.configure(text='GMAIL was copied to clipboard')
-        B[0].configure(background='gray')
-        B[1].configure(background='gray')
-        B[2].configure(background='green')
+        main_win_message.configure(text='GMAIL was copied to clipboard', fg=color_convertor["mygreen"])
+        B[0].configure(background=color_convertor["mygray"])
+        B[1].configure(background=color_convertor["mygray"])
+        B[2].configure(background=color_convertor["mygreen"])
         pyperclip.copy(saved_config_data[2])
     else:
-        main_win_message.configure(text='GMAIL not configured')
-        B[2].configure(background='gray')
+        main_win_message.configure(text='GMAIL not configured', fg=color_convertor["myred"])
+        B[2].configure(background=color_convertor["mygray"])
 
 
 # Function to refresh the GUI
@@ -87,7 +93,7 @@ def Refresh():
     i = 0
     while i <= 2:
         if str != saved_config_data[i]:
-            B[i].configure(background='gray')
+            B[i].configure(background=color_convertor["mygray"])
         i += 1
     Check_Input_Data()
     Set_Status()
@@ -214,15 +220,15 @@ def Set_Status():
 
 # Declare list of buttons that will be used the in main window for ID, MAIL and GMAIL
 B = [tkinter.Button(), tkinter.Button(), tkinter.Button()]
-B[0] = tkinter.Button(frame, text="ID", background='gray', height=1, width=5, command=IDCallBack)
+B[0] = tkinter.Button(frame, text="ID", background=color_convertor["mygray"], height=1, width=5, command=IDCallBack)
 B[0].pack()
 canvas.create_window(150, 80, window=B[0])
 
-B[1] = tkinter.Button(frame, text="MAIL", background='gray', height=1, width=5, command=MailCallBack)
+B[1] = tkinter.Button(frame, text="MAIL", background=color_convertor["mygray"], height=1, width=5, command=MailCallBack)
 B[1].pack()
 canvas.create_window(150, 120, window=B[1])
 
-B[2] = tkinter.Button(frame, text="GMAIL", background='gray', height=1, width=5, command=GMailCallBack)
+B[2] = tkinter.Button(frame, text="GMAIL", background=color_convertor["mygray"], height=1, width=5, command=GMailCallBack)
 B[2].pack()
 canvas.create_window(150, 160, window=B[2])
 
@@ -233,7 +239,7 @@ Status_Indicator = [canvas.create_oval(70, 75, 80, 85), canvas.create_oval(70, 1
 
 Set_Status()
 
-Config_button = tkinter.Button(frame, text="CONFIGURE", background='green', height=1, width=10,
+Config_button = tkinter.Button(frame, text="CONFIGURE", background=color_convertor["mygreen"], height=1, width=10,
                                command=Configure_Input_Data)
 Config_button.pack()
 canvas.create_window(20, 20, window=Config_button)
@@ -243,7 +249,7 @@ CB = tkinter.Checkbutton(text='See current clipboard', font=('helvetica', 10), v
 CB.pack
 canvas.create_window(150, 280, window=CB)
 
-main_win_message = tkinter.Label(frame, text='', fg='green', font=('helvetica', 12, 'bold'))
+main_win_message = tkinter.Label(frame, text='', fg=color_convertor["mygreen"], font=('helvetica', 12, 'bold'))
 canvas.create_window(150, 220, window=main_win_message)
 
 status_label = tkinter.Label(frame, text='Status', fg='black', font=('helvetica', 12, 'bold'))
