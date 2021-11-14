@@ -171,13 +171,13 @@ def Data_Save_Call_Back():
 # Function to check if the configured input data is valid
 def Check_Input_Data():
     if path.is_file():
-        print(f'File {path_to_file} found')
+        #print(f'File {path_to_file} found')
         f = open(path_to_file, "r")
         Lines = f.read().splitlines()
         i = 0
         for line in Lines:
             saved_config_data[i] = line[6:]
-            print(saved_config_data[i])
+            #print(saved_config_data[i])
             i = i + 1
         f.close()
     if saved_config_data[0] != "default" and saved_config_data[0] != "":
