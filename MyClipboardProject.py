@@ -168,13 +168,23 @@ def Configure_Input_Data():
 # CallBack function for pressing the SAVE button
 def Data_Save_Call_Back():
     global input_txt, save_message
-    f = open(path_to_file, "w")
-    f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
-    f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
-    f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
-    f.close()
-    save_message.configure(text="Configuration Saved. Close the Configuration Window")
-
+    at_index = [0, 0]
+    at_index[0] = input_txt[1].get('1.0', 'end-1c').find("@")
+    at_index[1] = input_txt[2].get('1.0', 'end-1c').find("@")
+    if "@" in input_txt[1].get('1.0', 'end-1c') and "." in input_txt[1].get('1.0', 'end-1c')[at_index[0]:]:
+        if "@" in input_txt[2].get('1.0', 'end-1c') and "." in input_txt[2].get('1.0', 'end-1c')[at_index[1]:]:
+            f = open(path_to_file, "w")
+            f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
+            f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
+            f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
+            f.close()
+            save_message.configure(text="Configuration Saved. Close the Configuration Window")
+        else:
+            save_message.configure(text="GMAIL is not valid")
+            return
+    else:
+        save_message.configure(text="MAIL is not valid")
+        return
 
 # Function to check if the configured input data is valid
 def Check_Input_Data():
