@@ -168,13 +168,23 @@ def Configure_Input_Data():
 # CallBack function for pressing the SAVE button
 def Data_Save_Call_Back():
     global input_txt, save_message
-    f = open(path_to_file, "w")
-    f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
-    f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
-    f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
-    f.close()
-    save_message.configure(text="Configuration Saved. Close the Configuration Window")
-
+    at_index = [0, 0]
+    at_index[0] = input_txt[1].get('1.0', 'end-1c').find("@")
+    at_index[1] = input_txt[2].get('1.0', 'end-1c').find("@")
+    if "@" in input_txt[1].get('1.0', 'end-1c') and "." in input_txt[1].get('1.0', 'end-1c')[at_index[0]:]:
+        if "@" in input_txt[2].get('1.0', 'end-1c') and "." in input_txt[2].get('1.0', 'end-1c')[at_index[1]:]:
+            f = open(path_to_file, "w")
+            f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
+            f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
+            f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
+            f.close()
+            save_message.configure(text="Configuration Saved. Close the Configuration Window")
+        else:
+            save_message.configure(text="GMAIL is not valid")
+            return
+    else:
+        save_message.configure(text="MAIL is not valid")
+        return
 
 # Function to check if the configured input data is valid
 def Check_Input_Data():
@@ -205,19 +215,19 @@ def Check_Input_Data():
 # Function used to set the status indicator for each of the possible configured data
 def Set_Status():
     if status[0] == 0:
-        canvas.itemconfig(Status_Indicator[0], fill="red")  # Fill the circle with RED
+        canvas.itemconfig(Status_Indicator[0], fill=color_convertor["myred"])  # Fill the circle with RED
     else:
-        canvas.itemconfig(Status_Indicator[0], fill="green")  # Fill the circle with GREEN
+        canvas.itemconfig(Status_Indicator[0], fill=color_convertor["mygreen"])  # Fill the circle with GREEN
 
     if status[1] == 0:
-        canvas.itemconfig(Status_Indicator[1], fill="red")  # Fill the circle with RED
+        canvas.itemconfig(Status_Indicator[1], fill=color_convertor["myred"])  # Fill the circle with RED
     else:
-        canvas.itemconfig(Status_Indicator[1], fill="green")  # Fill the circle with GREEN
+        canvas.itemconfig(Status_Indicator[1], fill=color_convertor["mygreen"])  # Fill the circle with GREEN
         
     if status[2] == 0:
-        canvas.itemconfig(Status_Indicator[2], fill="red")  # Fill the circle with RED
+        canvas.itemconfig(Status_Indicator[2], fill=color_convertor["myred"])  # Fill the circle with RED
     else:
-        canvas.itemconfig(Status_Indicator[2], fill="green")  # Fill the circle with GREEN
+        canvas.itemconfig(Status_Indicator[2], fill=color_convertor["mygreen"])  # Fill the circle with GREEN
 
 
 # Declare list of buttons that will be used the in main window for ID, MAIL and GMAIL
