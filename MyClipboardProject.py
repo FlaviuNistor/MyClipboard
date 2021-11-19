@@ -168,8 +168,11 @@ def Configure_Input_Data():
 # CallBack function for pressing the SAVE button
 def Data_Save_Call_Back():
     global input_txt, save_message
-    valid_data = 0
-    at_index = [0, 0]
+    valid_data = 0  # use variable to signal is email addresses are valid
+    at_index = [0, 0]   # list with index position for ""@"
+    # check if string is empty. If it is that ios considered valid
+    # if not empty should respect the rule in order to be valid
+    # rule: must contain '@'  and a '.' after
     if input_txt[1].get('1.0', 'end-1c') != "":
         at_index[0] = input_txt[1].get('1.0', 'end-1c').find("@")
         if "@" in input_txt[1].get('1.0', 'end-1c') and "." in input_txt[1].get('1.0', 'end-1c')[at_index[0]:]:
@@ -177,6 +180,9 @@ def Data_Save_Call_Back():
     else:
         valid_data += 1
 
+    # check if string is empty. If it is that ios considered valid
+    # if not empty should respect the rule in order to be valid
+    # rule: must contain '@'  and a '.' after
     if input_txt[2].get('1.0', 'end-1c') != "":
         at_index[1] = input_txt[2].get('1.0', 'end-1c').find("@")
         if "@" in input_txt[2].get('1.0', 'end-1c') and "." in input_txt[2].get('1.0', 'end-1c')[at_index[1]:]:
@@ -184,6 +190,7 @@ def Data_Save_Call_Back():
     else:
         valid_data += 2
 
+    # check both addresses are valid, and if so update the config file
     if valid_data == 3:
         f = open(path_to_file, "w")
         f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
@@ -191,10 +198,13 @@ def Data_Save_Call_Back():
         f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
         f.close()
         save_message.configure(text="Configuration Saved. Close the Configuration Window")
+    # both addresses are not valid
     elif valid_data == 0:
         save_message.configure(text="Both GMAIL and MAIL are not valid")
+    # first address is not valid
     elif valid_data == 2:
         save_message.configure(text="MAIL is not valid")
+    # second address is not valid
     elif valid_data == 1:
         save_message.configure(text="GMAIL is not valid")
 
