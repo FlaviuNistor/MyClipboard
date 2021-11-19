@@ -168,23 +168,35 @@ def Configure_Input_Data():
 # CallBack function for pressing the SAVE button
 def Data_Save_Call_Back():
     global input_txt, save_message
+    valid_data = 0
     at_index = [0, 0]
-    at_index[0] = input_txt[1].get('1.0', 'end-1c').find("@")
-    at_index[1] = input_txt[2].get('1.0', 'end-1c').find("@")
-    if "@" in input_txt[1].get('1.0', 'end-1c') and "." in input_txt[1].get('1.0', 'end-1c')[at_index[0]:]:
-        if "@" in input_txt[2].get('1.0', 'end-1c') and "." in input_txt[2].get('1.0', 'end-1c')[at_index[1]:]:
-            f = open(path_to_file, "w")
-            f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
-            f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
-            f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
-            f.close()
-            save_message.configure(text="Configuration Saved. Close the Configuration Window")
-        else:
-            save_message.configure(text="GMAIL is not valid")
-            return
+    if input_txt[1].get('1.0', 'end-1c') != "":
+        at_index[0] = input_txt[1].get('1.0', 'end-1c').find("@")
+        if "@" in input_txt[1].get('1.0', 'end-1c') and "." in input_txt[1].get('1.0', 'end-1c')[at_index[0]:]:
+            valid_data += 1
     else:
+        valid_data += 1
+
+    if input_txt[2].get('1.0', 'end-1c') != "":
+        at_index[1] = input_txt[2].get('1.0', 'end-1c').find("@")
+        if "@" in input_txt[2].get('1.0', 'end-1c') and "." in input_txt[2].get('1.0', 'end-1c')[at_index[1]:]:
+            valid_data += 2
+    else:
+        valid_data += 2
+
+    if valid_data == 3:
+        f = open(path_to_file, "w")
+        f.write("Line1:" + input_txt[0].get('1.0', 'end-1c') + "\n")
+        f.write("Line2:" + input_txt[1].get('1.0', 'end-1c') + "\n")
+        f.write("Line3:" + input_txt[2].get('1.0', 'end-1c'))
+        f.close()
+        save_message.configure(text="Configuration Saved. Close the Configuration Window")
+    elif valid_data == 0:
+        save_message.configure(text="Both GMAIL and MAIL are not valid")
+    elif valid_data == 2:
         save_message.configure(text="MAIL is not valid")
-        return
+    elif valid_data == 1:
+        save_message.configure(text="GMAIL is not valid")
 
 # Function to check if the configured input data is valid
 def Check_Input_Data():
