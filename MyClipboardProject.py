@@ -48,6 +48,7 @@ save_message = tkinter.Label()
 # CallBack function for pressing the ID button
 def IDCallBack():
     global main_win_message
+    # Change the color of the buttons to reflect the current selection
     if status[0] == 1:
         main_win_message.configure(text='ID was copied to clipboard', fg=color_convertor["mygreen"])
         B[0].configure(background=color_convertor["mygreen"])
@@ -62,6 +63,7 @@ def IDCallBack():
 # CallBack function for pressing the MAIL button
 def MailCallBack():
     global main_win_message
+    # Change the color of the buttons to reflect the current selection
     if status[1] == 1:
         main_win_message.configure(text='MAIL was copied to clipboard', fg=color_convertor["mygreen"])
         B[0].configure(background=color_convertor["mygray"])
@@ -76,6 +78,7 @@ def MailCallBack():
 # CallBack function for pressing the GMAIL button
 def GMailCallBack():
     global main_win_message
+    # Change the color of the buttons to reflect the current selection
     if status[2] == 1:
         main_win_message.configure(text='GMAIL was copied to clipboard', fg=color_convertor["mygreen"])
         B[0].configure(background=color_convertor["mygray"])
@@ -280,7 +283,7 @@ canvas.create_window(20, 20, window=Config_button)
 
 CB = tkinter.Checkbutton(text='See current clipboard', font=('helvetica', 10), variable=var1, onvalue=1, offvalue=0,
                          command=Check_sel)
-CB.pack
+CB.pack()
 canvas.create_window(150, 280, window=CB)
 
 main_win_message = tkinter.Label(frame, text='', fg=color_convertor["mygreen"], font=('helvetica', 12, 'bold'))
